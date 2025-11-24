@@ -1,0 +1,8 @@
+FROM postgres:15-alpine
+
+ENV POSTGRES_DB=patientdb
+ENV POSTGRES_USER=admin
+ENV POSTGRES_PASSWORD=admin123
+
+EXPOSE 5432
+
