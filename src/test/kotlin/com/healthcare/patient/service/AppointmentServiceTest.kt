@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Transactional
 class AppointmentServiceTest : BaseIntegrationTest() {
@@ -29,7 +30,7 @@ class AppointmentServiceTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var patientRepository: PatientRepository
 
-    private var testPatientId: Long = 0
+    private lateinit var testPatientId: UUID
 
     @BeforeEach
     fun setUp() {

@@ -75,7 +75,7 @@ class PatientControllerTest : BaseIntegrationTest() {
             .response
             .contentAsString
 
-        val id = objectMapper.readTree(createResponse).get("id").asLong()
+        val id = objectMapper.readTree(createResponse).get("id").asText()
 
         mockMvc.perform(get("/api/patients/$id"))
             .andExpect(status().isOk)
@@ -139,7 +139,7 @@ class PatientControllerTest : BaseIntegrationTest() {
             .response
             .contentAsString
 
-        val id = objectMapper.readTree(createResponse).get("id").asLong()
+        val id = objectMapper.readTree(createResponse).get("id").asText()
 
         val updateRequest = PatientRequest(
             firstName = "Charles",
@@ -179,13 +179,13 @@ class PatientControllerTest : BaseIntegrationTest() {
             .response
             .contentAsString
 
-        val id = objectMapper.readTree(createResponse).get("id").asLong()
+        val id = objectMapper.readTree(createResponse).get("id").asText()
 
         mockMvc.perform(delete("/api/patients/$id"))
             .andExpect(status().isNoContent)
 
         mockMvc.perform(get("/api/patients/$id"))
-            .andExpect(status().is5xxServerError)
+            .andExpect(status().isNotFound)
     }
 }
 
