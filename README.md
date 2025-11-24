@@ -58,6 +58,10 @@ The Gradle wrapper will automatically download if needed on first run.
 
 The application will start on `http://localhost:8080`
 
+**Note**: On first startup, the database will be automatically populated with:
+- 10 sample patients with realistic names and information
+- 20 appointments distributed among the patients with various statuses and dates
+
 ## API Documentation (Swagger)
 
 Once the application is running, access the interactive API documentation:
@@ -141,6 +145,24 @@ Default configuration (application.properties):
 - URL: `jdbc:postgresql://localhost:5432/patientdb`
 - Username: `admin`
 - Password: `admin123`
+
+### Sample Data
+
+The application automatically initializes the database with sample data on first startup:
+- **10 Patients**: Emma Johnson, Michael Williams, Sophia Brown, James Davis, Olivia Miller, William Wilson, Ava Moore, Benjamin Taylor, Isabella Anderson, Lucas Thomas
+- **20 Appointments**: Mix of past, current, and future appointments with various statuses (SCHEDULED, COMPLETED, CANCELLED, NO_SHOW)
+
+To start with a fresh database:
+```bash
+# Stop and remove the database container
+docker-compose down -v
+
+# Start a new database
+docker-compose up -d
+
+# Restart the application
+./gradlew bootRun
+```
 
 ## Project Structure
 

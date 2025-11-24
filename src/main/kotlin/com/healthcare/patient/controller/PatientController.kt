@@ -11,6 +11,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/patients")
@@ -34,7 +35,7 @@ class PatientController(private val patientService: PatientService) {
         ApiResponse(responseCode = "200", description = "Patient found"),
         ApiResponse(responseCode = "404", description = "Patient not found")
     ])
-    fun getPatient(@PathVariable id: Long): ResponseEntity<PatientResponse> {
+    fun getPatient(@PathVariable id: UUID): ResponseEntity<PatientResponse> {
         val response = patientService.getPatientById(id)
         return ResponseEntity.ok(response)
     }
@@ -55,7 +56,7 @@ class PatientController(private val patientService: PatientService) {
         ApiResponse(responseCode = "400", description = "Invalid input data")
     ])
     fun updatePatient(
-        @PathVariable id: Long,
+        @PathVariable id: UUID,
         @Valid @RequestBody request: PatientRequest
     ): ResponseEntity<PatientResponse> {
         val response = patientService.updatePatient(id, request)
@@ -68,7 +69,7 @@ class PatientController(private val patientService: PatientService) {
         ApiResponse(responseCode = "204", description = "Patient deleted successfully"),
         ApiResponse(responseCode = "404", description = "Patient not found")
     ])
-    fun deletePatient(@PathVariable id: Long): ResponseEntity<Void> {
+    fun deletePatient(@PathVariable id: UUID): ResponseEntity<Void> {
         patientService.deletePatient(id)
         return ResponseEntity.noContent().build()
     }

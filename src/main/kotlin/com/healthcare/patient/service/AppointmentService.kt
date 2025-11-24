@@ -8,6 +8,7 @@ import com.healthcare.patient.repository.AppointmentRepository
 import com.healthcare.patient.repository.PatientRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 class AppointmentService(
@@ -31,7 +32,7 @@ class AppointmentService(
     }
 
     @Transactional(readOnly = true)
-    fun getAppointmentById(id: Long): AppointmentResponse {
+    fun getAppointmentById(id: UUID): AppointmentResponse {
         val appointment = appointmentRepository.findById(id)
             .orElseThrow { RuntimeException("Appointment not found with id: $id") }
         return appointment.toResponse()
@@ -43,12 +44,12 @@ class AppointmentService(
     }
 
     @Transactional(readOnly = true)
-    fun getAppointmentsByPatientId(patientId: Long): List<AppointmentResponse> {
+    fun getAppointmentsByPatientId(patientId: UUID): List<AppointmentResponse> {
         return appointmentRepository.findByPatientId(patientId).map { it.toResponse() }
     }
 
     @Transactional
-    fun updateAppointmentStatus(id: Long, status: AppointmentStatus): AppointmentResponse {
+    fun updateAppointmentStatus(id: UUID, status: AppointmentStatus): AppointmentResponse {
         val appointment = appointmentRepository.findById(id)
             .orElseThrow { RuntimeException("Appointment not found with id: $id") }
 
@@ -58,7 +59,7 @@ class AppointmentService(
     }
 
     @Transactional
-    fun deleteAppointment(id: Long) {
+    fun deleteAppointment(id: UUID) {
         if (!appointmentRepository.existsById(id)) {
             throw RuntimeException("Appointment not found with id: $id")
         }

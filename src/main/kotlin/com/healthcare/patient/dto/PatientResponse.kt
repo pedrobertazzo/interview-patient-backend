@@ -1,9 +1,10 @@
 package com.healthcare.patient.dto
 
 import java.time.LocalDate
+import java.util.UUID
 
 data class PatientResponse(
-    val id: Long,
+    val id: UUID,
     val firstName: String,
     val lastName: String,
     val email: String,

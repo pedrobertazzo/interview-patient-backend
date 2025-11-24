@@ -12,6 +12,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -36,7 +37,7 @@ class AppointmentController(private val appointmentService: AppointmentService) 
         ApiResponse(responseCode = "200", description = "Appointment found"),
         ApiResponse(responseCode = "404", description = "Appointment not found")
     ])
-    fun getAppointment(@PathVariable id: Long): ResponseEntity<AppointmentResponse> {
+    fun getAppointment(@PathVariable id: UUID): ResponseEntity<AppointmentResponse> {
         val response = appointmentService.getAppointmentById(id)
         return ResponseEntity.ok(response)
     }
@@ -44,7 +45,7 @@ class AppointmentController(private val appointmentService: AppointmentService) 
     @GetMapping
     @Operation(summary = "Get all appointments", description = "Retrieves all appointments, optionally filtered by patient")
     @ApiResponse(responseCode = "200", description = "List of appointments retrieved successfully")
-    fun getAllAppointments(@RequestParam(required = false) patientId: Long?): ResponseEntity<List<AppointmentResponse>> {
+    fun getAllAppointments(@RequestParam(required = false) patientId: UUID?): ResponseEntity<List<AppointmentResponse>> {
         val appointments = if (patientId != null) {
             appointmentService.getAppointmentsByPatientId(patientId)
         } else {
@@ -60,7 +61,7 @@ class AppointmentController(private val appointmentService: AppointmentService) 
         ApiResponse(responseCode = "404", description = "Appointment not found")
     ])
     fun updateAppointmentStatus(
-        @PathVariable id: Long,
+        @PathVariable id: UUID,
         @RequestParam status: AppointmentStatus
     ): ResponseEntity<AppointmentResponse> {
         val response = appointmentService.updateAppointmentStatus(id, status)
@@ -73,7 +74,7 @@ class AppointmentController(private val appointmentService: AppointmentService) 
         ApiResponse(responseCode = "204", description = "Appointment deleted successfully"),
         ApiResponse(responseCode = "404", description = "Appointment not found")
     ])
-    fun deleteAppointment(@PathVariable id: Long): ResponseEntity<Void> {
+    fun deleteAppointment(@PathVariable id: UUID): ResponseEntity<Void> {
         appointmentService.deleteAppointment(id)
         return ResponseEntity.noContent().build()
     }

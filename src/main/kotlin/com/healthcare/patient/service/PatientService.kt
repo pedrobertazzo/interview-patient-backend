@@ -6,6 +6,7 @@ import com.healthcare.patient.model.Patient
 import com.healthcare.patient.repository.PatientRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 class PatientService(private val patientRepository: PatientRepository) {
@@ -24,7 +25,7 @@ class PatientService(private val patientRepository: PatientRepository) {
     }
 
     @Transactional(readOnly = true)
-    fun getPatientById(id: Long): PatientResponse {
+    fun getPatientById(id: UUID): PatientResponse {
         val patient = patientRepository.findById(id)
             .orElseThrow { RuntimeException("Patient not found with id: $id") }
         return patient.toResponse()
@@ -36,7 +37,7 @@ class PatientService(private val patientRepository: PatientRepository) {
     }
 
     @Transactional
-    fun updatePatient(id: Long, request: PatientRequest): PatientResponse {
+    fun updatePatient(id: UUID, request: PatientRequest): PatientResponse {
         val patient = patientRepository.findById(id)
             .orElseThrow { RuntimeException("Patient not found with id: $id") }
 
@@ -51,7 +52,7 @@ class PatientService(private val patientRepository: PatientRepository) {
     }
 
     @Transactional
-    fun deletePatient(id: Long) {
+    fun deletePatient(id: UUID) {
         if (!patientRepository.existsById(id)) {
             throw RuntimeException("Patient not found with id: $id")
         }
