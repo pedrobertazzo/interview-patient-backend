@@ -35,68 +35,22 @@ For detailed instructions, see [SDKMAN_JAVA_SETUP.md](SDKMAN_JAVA_SETUP.md)
 
 ## Setup
 
-### 0. Clean Up Old Java Files (Important!)
-
-After the Kotlin conversion, remove old Java files:
-
-```bash
-rm -rf src/main/java src/test/java src/Main.java
-```
-
-Or use the cleanup script:
-```bash
-chmod +x cleanup-now.sh
-./cleanup-now.sh
-```
-
-See [FIX_BUILD_NOW.md](FIX_BUILD_NOW.md) for details.
-
-### 1. Initialize Gradle Wrapper
-
-First time setup - download the Gradle wrapper JAR:
-
-```bash
-chmod +x init-gradle.sh
-./init-gradle.sh --version
-```
-
-Or manually download the wrapper JAR:
-```bash
-mkdir -p gradle/wrapper
-curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.4.0/gradle/wrapper/gradle-wrapper.jar
-chmod +x gradlew
-```
-
-Or if you have gradle installed globally:
-```bash
-gradle wrapper --gradle-version 8.13
-```
-
-### 2. Start PostgreSQL Database
+### 1. Start PostgreSQL Database
 
 Using Docker Compose:
 ```bash
 docker-compose up -d
 ```
 
-Or using Dockerfile:
-```bash
-docker build -t patient-postgres .
-docker run -d -p 5432:5432 --name patient-db patient-postgres
-```
-
-### 3. Build the Application
+### 2. Build the Application
 
 ```bash
 ./gradlew clean build
 ```
 
-Or use the init script:
-```bash
-./init-gradle.sh clean build
-```
+The Gradle wrapper will automatically download if needed on first run.
 
-### 4. Run the Application
+### 3. Run the Application
 
 ```bash
 ./gradlew bootRun
@@ -111,12 +65,6 @@ Once the application is running, access the interactive API documentation:
 **Swagger UI**: http://localhost:8080/swagger-ui.html
 
 **OpenAPI Spec**: http://localhost:8080/v3/api-docs
-
-Features:
-- 📖 Browse all API endpoints
-- 🧪 Test endpoints directly in browser
-- 📝 View request/response schemas
-- ✅ See validation requirements
 
 ## API Endpoints
 
@@ -230,13 +178,3 @@ src/
     └── resources/
         └── application.properties
 ```
-
-## Stopping the Application
-
-Stop the Spring Boot application: `Ctrl+C`
-
-Stop the PostgreSQL container:
-```bash
-docker-compose down
-```
-

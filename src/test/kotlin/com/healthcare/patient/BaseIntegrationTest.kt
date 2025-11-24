@@ -9,7 +9,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 abstract class BaseIntegrationTest {
 
     companion object {
-        private val postgres: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15-alpine")
+        val postgres: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15-alpine")
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test")
@@ -18,7 +18,6 @@ abstract class BaseIntegrationTest {
             postgres.start()
         }
 
-        @JvmStatic
         @DynamicPropertySource
         fun configureProperties(registry: DynamicPropertyRegistry) {
             registry.add("spring.datasource.url", postgres::getJdbcUrl)

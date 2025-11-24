@@ -56,7 +56,26 @@ Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
 fi
 
-CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+# Auto-download Gradle Wrapper JAR if missing
+WRAPPER_JAR="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
+if [ ! -f "$WRAPPER_JAR" ]; then
+    echo "Gradle Wrapper JAR not found. Downloading..."
+    mkdir -p "$APP_HOME/gradle/wrapper"
+    WRAPPER_URL="https://raw.githubusercontent.com/gradle/gradle/v8.13.0/gradle/wrapper/gradle-wrapper.jar"
+
+    if command -v curl >/dev/null 2>&1; then
+        curl -L -o "$WRAPPER_JAR" "$WRAPPER_URL" || die "Failed to download Gradle Wrapper JAR"
+    elif command -v wget >/dev/null 2>&1; then
+        wget -O "$WRAPPER_JAR" "$WRAPPER_URL" || die "Failed to download Gradle Wrapper JAR"
+    else
+        die "ERROR: curl or wget is required to download the Gradle Wrapper JAR.
+Please install curl or wget, or manually download the wrapper from:
+$WRAPPER_URL"
+    fi
+    echo "Gradle Wrapper downloaded successfully!"
+fi
+
+CLASSPATH=$WRAPPER_JAR
 
 exec "$JAVACMD" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS -Dorg.gradle.appname="$APP_BASE_NAME" -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
 
