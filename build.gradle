@@ -42,6 +42,17 @@ kotlin {
     jvmToolchain(17)
 }
 
+tasks.named('test') {
+    useJUnitPlatform()
+
+    // Fork a new JVM for each test class to avoid Testcontainers issues with Gradle daemon
+    forkEvery = 1
+    maxParallelForks = 1
+
+    // Always run tests, don't use cached results
+    outputs.upToDateWhen { false }
+}
+
 tasks.withType(KotlinCompile).configureEach {
     compilerOptions {
         freeCompilerArgs.add('-Xjsr305=strict')

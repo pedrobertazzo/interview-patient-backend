@@ -116,13 +116,6 @@ PATCH /api/appointments/1/status?status=COMPLETED
 
 ## Running Tests
 
-**⚠️ IMPORTANT: Docker must be running before running tests!**
-
-Check Docker is running:
-```bash
-docker ps
-```
-
 Run all tests:
 ```bash
 ./gradlew clean test
@@ -141,12 +134,6 @@ Tests use Testcontainers to spin up a real PostgreSQL instance, ensuring integra
 2. Verify Docker is accessible: `docker ps`
 3. Check Docker can pull images: `docker pull postgres:15-alpine`
 4. Run with more info: `./gradlew test --info`
-
-### If tests fail with "SQLGrammarException":
-This usually means the container didn't start properly. Try:
-```bash
-./gradlew clean test --info
-```
 
 ## Database Configuration
 
