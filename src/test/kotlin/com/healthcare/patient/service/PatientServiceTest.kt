@@ -2,6 +2,8 @@ package com.healthcare.patient.service
 
 import com.healthcare.patient.BaseIntegrationTest
 import com.healthcare.patient.dto.PatientRequest
+import com.healthcare.patient.exception.ResourceNotFoundException
+import com.healthcare.patient.repository.AppointmentRepository
 import com.healthcare.patient.repository.PatientRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -19,8 +21,12 @@ class PatientServiceTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var patientRepository: PatientRepository
 
+    @Autowired
+    private lateinit var appointmentRepository: AppointmentRepository
+
     @BeforeEach
     fun setUp() {
+        appointmentRepository.deleteAll()
         patientRepository.deleteAll()
     }
 
@@ -126,7 +132,7 @@ class PatientServiceTest : BaseIntegrationTest() {
 
         patientService.deletePatient(id)
 
-        assertThrows(RuntimeException::class.java) {
+        assertThrows(ResourceNotFoundException::class.java) {
             patientService.getPatientById(id)
         }
     }

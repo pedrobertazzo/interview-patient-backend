@@ -2,6 +2,7 @@ package com.healthcare.patient.service
 
 import com.healthcare.patient.dto.PatientRequest
 import com.healthcare.patient.dto.PatientResponse
+import com.healthcare.patient.exception.ResourceNotFoundException
 import com.healthcare.patient.model.Patient
 import com.healthcare.patient.repository.PatientRepository
 import org.springframework.stereotype.Service
@@ -27,7 +28,7 @@ class PatientService(private val patientRepository: PatientRepository) {
     @Transactional(readOnly = true)
     fun getPatientById(id: UUID): PatientResponse {
         val patient = patientRepository.findById(id)
-            .orElseThrow { RuntimeException("Patient not found with id: $id") }
+            .orElseThrow { ResourceNotFoundException("Patient not found with id: $id") }
         return patient.toResponse()
     }
 
@@ -39,7 +40,7 @@ class PatientService(private val patientRepository: PatientRepository) {
     @Transactional
     fun updatePatient(id: UUID, request: PatientRequest): PatientResponse {
         val patient = patientRepository.findById(id)
-            .orElseThrow { RuntimeException("Patient not found with id: $id") }
+            .orElseThrow { ResourceNotFoundException("Patient not found with id: $id") }
 
         patient.firstName = request.firstName
         patient.lastName = request.lastName
@@ -54,7 +55,7 @@ class PatientService(private val patientRepository: PatientRepository) {
     @Transactional
     fun deletePatient(id: UUID) {
         if (!patientRepository.existsById(id)) {
-            throw RuntimeException("Patient not found with id: $id")
+            throw ResourceNotFoundException("Patient not found with id: $id")
         }
         patientRepository.deleteById(id)
     }

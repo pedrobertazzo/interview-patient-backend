@@ -2,6 +2,7 @@ package com.healthcare.patient.service
 
 import com.healthcare.patient.dto.AppointmentRequest
 import com.healthcare.patient.dto.AppointmentResponse
+import com.healthcare.patient.exception.ResourceNotFoundException
 import com.healthcare.patient.model.Appointment
 import com.healthcare.patient.model.AppointmentStatus
 import com.healthcare.patient.repository.AppointmentRepository
@@ -19,7 +20,7 @@ class AppointmentService(
     @Transactional
     fun createAppointment(request: AppointmentRequest): AppointmentResponse {
         val patient = patientRepository.findById(request.patientId)
-            .orElseThrow { RuntimeException("Patient not found with id: ${request.patientId}") }
+            .orElseThrow { ResourceNotFoundException("Patient not found with id: ${request.patientId}") }
 
         val appointment = Appointment(
             appointmentDateTime = request.appointmentDateTime,
@@ -34,7 +35,7 @@ class AppointmentService(
     @Transactional(readOnly = true)
     fun getAppointmentById(id: UUID): AppointmentResponse {
         val appointment = appointmentRepository.findById(id)
-            .orElseThrow { RuntimeException("Appointment not found with id: $id") }
+            .orElseThrow { ResourceNotFoundException("Appointment not found with id: $id") }
         return appointment.toResponse()
     }
 
@@ -51,7 +52,7 @@ class AppointmentService(
     @Transactional
     fun updateAppointmentStatus(id: UUID, status: AppointmentStatus): AppointmentResponse {
         val appointment = appointmentRepository.findById(id)
-            .orElseThrow { RuntimeException("Appointment not found with id: $id") }
+            .orElseThrow { ResourceNotFoundException("Appointment not found with id: $id") }
 
         appointment.status = status
         val updated = appointmentRepository.save(appointment)
@@ -61,7 +62,7 @@ class AppointmentService(
     @Transactional
     fun deleteAppointment(id: UUID) {
         if (!appointmentRepository.existsById(id)) {
-            throw RuntimeException("Appointment not found with id: $id")
+            throw ResourceNotFoundException("Appointment not found with id: $id")
         }
         appointmentRepository.deleteById(id)
     }

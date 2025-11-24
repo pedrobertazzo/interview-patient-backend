@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
+    @ExceptionHandler(ResourceNotFoundException::class)
+    fun handleResourceNotFoundException(ex: ResourceNotFoundException): ResponseEntity<ErrorResponse> {
+        val error = ErrorResponse(ex.message ?: "Resource not found")
+        return ResponseEntity(error, HttpStatus.NOT_FOUND)
+    }
+
     @ExceptionHandler(RuntimeException::class)
     fun handleRuntimeException(ex: RuntimeException): ResponseEntity<ErrorResponse> {
         val error = ErrorResponse(ex.message ?: "An error occurred")
